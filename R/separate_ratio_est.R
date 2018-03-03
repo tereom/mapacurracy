@@ -1,7 +1,7 @@
-#' Compute ratio estimator for strata and combined ratio estimator for a
+#' Compute ratio estimator for strata and separate ratio estimator for a
 #' stratified sample of polygons.
 #'
-#' Ratio estimator is computed for each strata and then a combined version of
+#' Ratio estimator is computed for each strata and then a separate version of
 #' the ratio estimator is computed where the estimates of the strata are
 #' weighted according to the area of each stratum (unlike traditional estimator
 #' that weights with number of polygons sampled).
@@ -14,30 +14,25 @@
 #' @param stratum unquoted column with strata in the data and allocation
 #'   \code{data.frame}'s (the columns must have the same name in the
 #'   two \code{data.frame}'s)
-#' @param M: unquoted variable in data corresponding to denominator in ratio
-#' (eg. polygon areas)
 #' @param y: unquoted variable in data corresponding to numerator in ratio
 #' (eg. binary vector 1 correctly classified 0 ow)
+#' #' @param M: unquoted variable in data corresponding to denominator in ratio
+#' (eg. polygon areas)
 #' @param N: number of polygons in the strata.
-#' @return A \code{list} with estimates per strata and the combined ratio
+#' @return A \code{list} with estimates per strata and the separate ratio
 #'   estimate for overall population.
-#' @examples
-#' sampling_frame <- data_frame(id = 1:100, str = sample(1:5, 100, replace = TRUE))
-#' allo <- sampling_frame %>%
-#'     group_by(str) %>%
-#'     mutate(n = 0.4 * n())
-#' select_sample(allo, sampling_frame, n, str)
-
 #' @importFrom magrittr %>%
 #' @importFrom rlang !! !!! :=
 #' @export
-combined_ratio_est <- function(data, allocation, stratum, M, y, N){
+separate_ratio_est <- function(data, estratos_area, stratum, y, M, N){
     stratum_var_string <- deparse(substitute(stratum))
     stratum <- dplyr::enquo(stratum)
     M <- dplyr::enquo(M)
     y <- dplyr::enquo(y)
+    # allocation <- data %>% count(!!stratum)
     if (missing(N)){
         p_hs <- data %>%
+            left_join(estratos_area, by = stratum_var_string) %>%
             dplyr::mutate(M = !!M, y = !!y) %>%
             group_by(!!stratum) %>%
             do(ratio_est(M = .$M, y = .$y))
@@ -49,7 +44,7 @@ combined_ratio_est <- function(data, allocation, stratum, M, y, N){
             do(ratio_est(M = .$M, y = .$y, N = .$N[1]))
     }
     p_h_strata <- p_hs %>%
-        left_join(allocation, by = stratum_var_string)
+        left_join(estratos_area, by = stratum_var_string)
     p_h_pop <- strat_est(p_h = p_h_strata$p_hat, n_h = p_h_strata$n,
         M_h = p_h_strata$M_h, N_h = p_h_strata$N_h, s2_h = p_h_strata$s2_p_hat)
 
