@@ -83,57 +83,57 @@ calcular_est <- function(estados, edo_val, bits_df, marco_muestral){
         )
 
     ests_area_clase_madmex_combined <- edo_design %>%
-        group_by(class_madmex) %>%
-        summarise(
+        srvyr::group_by(class_madmex) %>%
+        srvyr::summarise(
             est_area_madmex = srvyr::survey_ratio(numerator = y_M_madmex,
                 denominator = area)
         )
 
     ests_area_clase_bits_combined <- edo_design %>%
-        group_by(class_bits) %>%
-        summarise(
-            est_area_madmex = srvyr::survey_ratio(numerator = y_M_bits,
-                denominator = area),
+        srvyr::group_by(class_bits) %>%
+        srvyr::summarise(
+            est_area_bits = srvyr::survey_ratio(numerator = y_M_bits,
+                denominator = area)
         )
 
     ests_area_clase_experto_combined <- edo_design %>%
-        group_by(class_expert_1) %>%
-        summarise(
-            est_area_madmex = survey_ratio(numerator = y_M_madmex, denominator = area_r),
-            est_area_bits = survey_ratio(numerator = y_M_bits, denominator = area_r)
+        srvyr::group_by(class_expert_1) %>%
+        srvyr::summarise(
+            est_area_madmex = srvyr::survey_ratio(numerator = y_M_madmex, denominator = area),
+            est_area_bits = srvyr::survey_ratio(numerator = y_M_bits, denominator = area)
         )
 
     ests_porcent_combined <- edo_design %>%
         srvyr::summarise(
-            est_porcent_madmex = srvyr::survey_mean(numerator = y_madmex),
-            est_porcent_bits = srvyr::survey_mean(numerator = y_bits)
+            est_porcent_madmex = srvyr::survey_mean(y_madmex),
+            est_porcent_bits = srvyr::survey_mean(y_bits)
         )
 
     ests_porcent_edo_combined <- edo_design %>%
         srvyr::group_by(edo) %>%
         srvyr::summarise(
-            est_porcent_madmex = srvyr::survey_mean(numerator = y_madmex),
-            est_porcent_bits = srvyr::survey_mean(numerator = y_bits)
+            est_porcent_madmex = srvyr::survey_mean(y_madmex),
+            est_porcent_bits = srvyr::survey_mean(y_bits)
         )
 
     ests_porcent_clase_madmex_combined <- edo_design %>%
-        group_by(class_madmex) %>%
-        summarise(
-            est_porcent_madmex = srvyr::survey_mean(numerator = y_madmex)
+        srvyr::group_by(class_madmex) %>%
+        srvyr::summarise(
+            est_porcent_madmex = srvyr::survey_mean(y_madmex)
         )
 
     ests_porcent_clase_bits_combined <- edo_design %>%
-        group_by(class_bits) %>%
-        summarise(
-            est_porcent_madmex = srvyr::survey_mean(numerator = y_bits)
+        srvyr::group_by(class_bits) %>%
+        srvyr::summarise(
+            est_porcent_bits = srvyr::survey_mean(y_bits)
         )
 
 
     ests_porcent_clase_experto_combined <- edo_design %>%
-        group_by(class_expert_1) %>%
-        summarise(
-            est_area_madmex = survey_mean(numerator = y_madmex),
-            est_area_bits = survey_mean(numerator = y_bits)
+        srvyr::group_by(class_expert_1) %>%
+        srvyr::summarise(
+            est_area_madmex = srvyr::survey_mean(y_madmex),
+            est_area_bits = srvyr::survey_mean(y_bits)
         )
 
 
