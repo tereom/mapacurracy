@@ -20,7 +20,7 @@
 
 #' @importFrom magrittr %>%
 #' @export
-calcular_ests <- function(estados, edo_val, bits_df, marco_muestral){
+calcular_est <- function(estados, edo_val, bits_df, marco_muestral){
     # variables:
     # predicted - MADMEX
     # Interpr1_p, Interpr2_p (interpretaciones Pedro)
