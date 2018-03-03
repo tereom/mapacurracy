@@ -4,7 +4,7 @@
 \alias{calcular_ests}
 \title{Create standard columns and types from data in BITS shapefiles}
 \usage{
-calcular_ests(estados, edo_val, bits_df)
+calcular_ests(estados, edo_val, bits_df, marco_muestral)
 }
 \arguments{
 \item{estados}{string ot vector of strings with the name of the state as
